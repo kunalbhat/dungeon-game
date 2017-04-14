@@ -40,19 +40,24 @@
     </style>
   </head>
   <body>
+    <p><span>Health: </span><span id="health_label"></span></p>
     <div id="board" class="board"></div>
 
     <script type="text/javascript">
-      var activeTile, boardArray, boardElement, offset, tileIndex;
+      var activeTile, boardArray, boardElement, health, offset, tileIndex;
 
       boardArray   = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
       boardElement = document.getElementById("board");
       tileIndex    = 0;
       offset       = Math.sqrt(boardArray.length);
+      health       = 100;
+
+      // Init health
+      document.getElementById("health_label").innerHTML = health;
 
       // Create board
       function addTile(num, pos) {
-        var tile = document.createElement('span');
+        var tile = document.createElement("span");
 
         tile.className = "tile";
         tile.id = "tile_" + pos;
@@ -79,9 +84,9 @@
 
       // Get active tile {
       function getActiveTile() {
-        activeTile = document.getElementsByClassName("tile active")[0];
+        a = document.getElementsByClassName("tile active")[0];
 
-        return activeTile;
+        return a;
       }
 
       // Set active tile
@@ -98,8 +103,7 @@
         currentTile.classList.remove("active");
 
         if (dir == 0) {
-          t = currentTile;
-          setActiveTile(t, -1);
+          setActiveTile(currentTile, -1);
         }
 
         if (dir == 1) {
@@ -108,8 +112,7 @@
         }
 
         if (dir == 2) {
-          t = currentTile;
-          setActiveTile(t, 1);
+          setActiveTile(currentTile, 1);
         }
 
         if (dir == 3) {
@@ -121,7 +124,7 @@
       loadBoard();
 
       // Key presses
-      document.body.onkeyup = function(e) {
+      document.body.onkeydown = function(e) {
         // Up
         if(e.keyCode == 38 || e.keyCode == 87) {
           moveTile(0);
