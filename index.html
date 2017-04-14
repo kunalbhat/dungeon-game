@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <style type="text/css">
+      .board {
+        background-color: #ccc;
+        display: block;
+        height: 400px;
+        width: 400px;
+      }
+
+      .tile {
+        display: inline-block;
+        height: 100px;
+        text-align: center;
+        width: 100px;
+      }
+
+      .tile.active {
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="board" class="board">
+
+    </div>
+
+    <script type="text/javascript">
+      var a = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+      // Create board
+      function addTile(num, pos) {
+        var tile = document.createElement('span');
+
+        tile.className = "tile";
+        tile.id = "tile_" + pos;
+        tile.innerHTML = num;
+
+        document.getElementById("board").appendChild(tile);
+      }
+
+      // Load board
+      function loadBoard() {
+        for (i=0; i<a.length; i++) {
+          addTile(a[i], i);
+        }
+
+        // Set active tile
+        startTile = document.getElementById("tile_0");
+        startTile.className = startTile.className + " active";
+      }
+
+      // Move tile
+      function moveTile(dir) {
+        currentTile = document.getElementsByClassName("tile active")[0];
+        currentTile.classList.remove("active");
+
+        if (dir == -1) {
+          currentTile.previousElementSibling.classList.add("active");
+        }
+
+        if (dir == 1) {
+          currentTile.nextElementSibling.classList.add("active");
+        }
+      }
+
+      loadBoard();
+
+      // Key presses
+      document.body.onkeyup = function(e){
+        //Left
+        if(e.keyCode == 37){
+          moveTile(-1);
+        }
+
+        //Right
+        if(e.keyCode == 39){
+          moveTile(1);
+        }
+      }
+    </script>
+  </body>
+</html>
