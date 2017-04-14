@@ -47,9 +47,8 @@
 
       boardArray   = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
       boardElement = document.getElementById("board");
-      tileIndex = 0;
-offset = Math.sqrt(boardArray.length);
-console.log(offset);
+      tileIndex    = 0;
+      offset       = Math.sqrt(boardArray.length);
 
       // Create board
       function addTile(num, pos) {
@@ -98,7 +97,7 @@ console.log(offset);
         currentTile = getActiveTile();
         currentTile.classList.remove("active");
 
-        if (dir == 0) && currentTile {
+        if (dir == 0) {
           t = currentTile;
           setActiveTile(t, -1);
         }
