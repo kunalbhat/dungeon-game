@@ -1,9 +1,8 @@
-<html>
+<html lang="en">
   <head>
+    <title>Dungeon Game</title>
     <style type="text/css">
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -44,7 +43,13 @@
     <div id="board" class="board"></div>
 
     <script type="text/javascript">
-      var a = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+      var activeTile, boardArray, boardElement, offset, tileIndex;
+
+      boardArray   = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+      boardElement = document.getElementById("board");
+      tileIndex = 0;
+offset = Math.sqrt(boardArray.length);
+console.log(offset);
 
       // Create board
       function addTile(num, pos) {
@@ -54,13 +59,13 @@
         tile.id = "tile_" + pos;
         tile.innerHTML = num;
 
-        document.getElementById("board").appendChild(tile);
+        boardElement.appendChild(tile);
       }
 
       // Load board
       function loadBoard() {
-        for (i=0; i<a.length; i++) {
-          addTile(a[i], i);
+        for (i=0; i<boardArray.length; i++) {
+          addTile(boardArray[i], i);
         }
 
         // Set active tile
@@ -68,32 +73,74 @@
         startTile.className = startTile.className + " active";
       }
 
+      // Get tile index
+      function getIndexOfCurrentTile(tile) {
+        return Array.from(boardElement.children).indexOf(tile);
+      }
+
+      // Get active tile {
+      function getActiveTile() {
+        activeTile = document.getElementsByClassName("tile active")[0];
+
+        return activeTile;
+      }
+
+      // Set active tile
+      function setActiveTile(t, m) {
+        i = getIndexOfCurrentTile(t);
+        o = offset * m;
+
+        document.getElementsByClassName("tile")[i + o].classList.add("active");
+      }
+
       // Move tile
       function moveTile(dir) {
-        currentTile = document.getElementsByClassName("tile active")[0];
+        currentTile = getActiveTile();
         currentTile.classList.remove("active");
 
-        if (dir == -1) {
-          currentTile.previousElementSibling.classList.add("active");
+        if (dir == 0) && currentTile {
+          t = currentTile;
+          setActiveTile(t, -1);
         }
 
         if (dir == 1) {
-          currentTile.nextElementSibling.classList.add("active");
+          t = currentTile.nextElementSibling;
+          setActiveTile(t, 0);
+        }
+
+        if (dir == 2) {
+          t = currentTile;
+          setActiveTile(t, 1);
+        }
+
+        if (dir == 3) {
+          t = currentTile.previousElementSibling;
+          setActiveTile(t, 0);
         }
       }
 
       loadBoard();
 
       // Key presses
-      document.body.onkeyup = function(e){
-        //Left
-        if(e.keyCode == 37){
-          moveTile(-1);
+      document.body.onkeyup = function(e) {
+        // Up
+        if(e.keyCode == 38 || e.keyCode == 87) {
+          moveTile(0);
         }
 
-        //Right
-        if(e.keyCode == 39){
+        // Right
+        if(e.keyCode == 39 || e.keyCode == 68) {
           moveTile(1);
+        }
+
+        // Down
+        if(e.keyCode == 40 || e.keyCode == 83) {
+          moveTile(2);
+        }
+
+        // Left
+        if(e.keyCode == 37 || e.keyCode == 65) {
+          moveTile(3);
         }
       }
     </script>
